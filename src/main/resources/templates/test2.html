@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--  <div id="app">-->
+<!--    <h1>{{msg}}</h1>-->
+<!--    <h1>{{name}}</h1>-->
+<!--    <button  v-on:click="get()">GET</button>-->
+<!--  </div>-->
+
+
+
+
+</body>
+<!--引入 JS 文件-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+<!--在线引入axios。在项目开发中会安装axios组件(npm install axios)-->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+  var mysql   =  require('mysql')
+  // 连接数据库
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'miao',
+    password: 'miao',
+    database: 'myemployees'
+  })
+
+
+  var app = new Vue({
+    el : '#app',
+    data : {
+      msg : 'Hello',
+      name : 'none'
+    },
+    methods : { get : function(){
+      axios.get('./a.txt', {
+        params : {
+          id : 1000
+        },
+        headers : {
+          token : 'HHHHHHHHHHHHHHH'
+        }
+      }).then(res => { this.msg = res.data;
+                      this.name = res.data.name;
+      }).catch(err =>{ this.msg = err;
+      });
+
+      }
+    }
+  })
+
+
+
+</script>
+</html>

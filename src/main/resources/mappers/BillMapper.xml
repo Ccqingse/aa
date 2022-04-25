@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.boot09.dao.BillDao">
+    <select id="findBillById" resultType="Bill">
+        select * from smbms_bill where id=#{id}
+    </select>
+
+    <sql id="bill_where">
+        <where>
+            <if test="billCode!=null">
+                billCode like concat('%',#{billCode},'%')</if>
+            <if test="productName!=null">
+                and productName like concat('%',#{productName},'%')</if>
+            <if test="productUnit!=null">
+                and productUnit like concat('%',#{productUnit},'%')</if>
+        </where>
+    </sql>
+
+    <select id="findBillList" resultType="Bill">
+        select * from smbms_bill
+        <include refid="bill_where"/>
+        order by creationDate desc
+        limit #{pyl},#{page_size}
+    </select>
+
+    <select id="findBillListCount" resultType="int">
+        select count(1) from smbms_bill
+        <include refid="bill_where"/>
+    </select>
+
+    <insert id="insertBill" >
+        insert into smbms_bill(billCode, productName, productDesc,productUnit,productCount,creationDate)
+        values(#{billCode},#{productName},#{productDesc},#{productUnit},#{productCount},#{creationDate})
+    </insert>
+
+
+    <update id="updateBill">
+      update smbms_bill set billCode=#{billCode}, productName=#{productName}, productDesc=#{productDesc}, productUnit=#{productUnit},productCount=#{productCount}
+      where  id=#{id}
+
+    </update>
+
+    <delete id="deleteBillById">
+       delete from  smbms_bill where id=#{id}
+    </delete>
+</mapper>
+
+

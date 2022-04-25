@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.boot09.dao.ProviderDao">
+
+    <sql id="provider_where">
+        <where>
+            <if test="proName!=null">
+                proName like concat('%',#{proName},'%')</if>
+            <if test="proDesc!=null">
+                and proDesc like concat('%',#{proDesc},'%')</if>
+        </where>
+    </sql>
+
+    <select id="findProviderById" resultType="Provider">
+        select * from smbms_provider where id=#{id}
+    </select>
+
+    <select id="findProviderList" resultType="Provider">
+        select * from smbms_provider
+        <include refid="provider_where"/>
+        order by creationDate desc
+        limit #{pyl},#{page_size}
+    </select>
+
+    <select id="findProviderList1" resultType="Provider">
+        select * from smbms_provider
+        <include refid="provider_where"/>
+        order by creationDate desc
+        limit #{pyl},#{page_size}
+    </select>
+
+    <select id="findProviderListCount" resultType="int">
+        select count(1) from smbms_provider
+        <include refid="provider_where"/>
+    </select>
+
+    <select id="findProviderListCount1" resultType="int">
+        select count(1) from smbms_provider
+        <include refid="provider_where"/>
+    </select>
+
+    <insert id="insertProvider" >
+        insert into  smbms_provider(proName, proDesc, proContact,proPhone)
+        values(#{proName},#{proDesc},#{proContact},#{proPhone})
+    </insert>
+
+    <update id="updateProvider">
+      update smbms_provider set proName=#{proName}, proDesc=#{proDesc}, proContact=#{proContact}, proPhone=#{proPhone}
+      where  id=#{id}
+
+    </update>
+
+    <delete id="deleteProviderById">
+       delete from  smbms_provider where id=#{id}
+    </delete>
+
+</mapper>
